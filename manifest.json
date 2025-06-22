@@ -1,0 +1,42 @@
+{
+  "manifest_version": 2,
+  "name": "XSS Filter Visualizer",
+  "description": "Reflected XSS 필터링 여부를 자동 검사하고 결과를 시각화합니다.",
+  "version": "0.1.0",
+
+  "icons": {
+    "16":  "icons/16.png",
+    "48":  "icons/48.png",
+    "128": "icons/128.png"
+  },
+
+  "browser_action": {
+    "default_title": "XSS Filter Visualizer",
+    "default_popup": "popup.html"
+  },
+
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": true
+  },
+
+  "permissions": [
+    "<all_urls>",          // 어떤 도메인이든 fetch/XHR 허용
+    "webRequest",          // 요청·응답 헤더 열람
+    "webRequestBlocking",  // 커스텀 헤더 삽입
+    "storage",             // 설정·결과 캐시
+    "tabs"                 // 결과 탭 열기/포커스
+  ],
+
+  "web_accessible_resources": [
+    "result.html",
+    "details.html",
+    "result.css",
+    "details.css",
+    "result.js",
+    "details.js"
+  ],
+
+  "content_security_policy": "script-src 'self'; object-src 'self'"
+}
+
