@@ -13,13 +13,11 @@ body {
 }
 
 /* 컨테이너 */
-.container {
-    max-width: 800px;
-    margin: 20px auto;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+.raw-data-container {
+    background: #2d3748;
+    border-radius: 8px;
     overflow: hidden;
+    width: 100%;
 }
 
 /* 헤더 */
@@ -89,11 +87,11 @@ body {
     text-transform: uppercase;
 }
 
-/*분류 태그*/
 .tag.custom {
     background: #e3f2fd;
     color: #1976d2;
 }
+
 .tag.vulnerable {
     background: #ffebee;
     color: #d32f2f;
@@ -117,6 +115,7 @@ body {
 /* 정보 그리드 */
 .info-grid {
     display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 24px;
     margin-bottom: 32px;
 }
@@ -124,52 +123,190 @@ body {
 .info-item {
     display: flex;
     flex-direction: column;
-  }
-
-.info-label {
-    font-size: 14px;
-    color: #666;
-    font-weight: 500;
 }
 
-/*원본 데이터*/
+.info-label {
+    font-size: 12px;
+    color: #666;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.info-value {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+}
+
+/* 원본 데이터 */
 .raw-data-section {
     margin-bottom: 32px;
+    padding: 0;
 }
 
 .section-title {
     font-size: 18px;
     font-weight: 600;
     margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .raw-data-container {
-    background: black;
+    background: #2d3748;
     border-radius: 8px;
     overflow: hidden;
+    width: 100%;
 }
 
 .raw-data-header {
-    background: gray;
+    background: #4a5568;
     padding: 12px 16px;
     color: white;
     font-size: 14px;
     font-weight: 500;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
 }
 
 .raw-data-content {
     padding: 16px;
-    color: white;
+    margin: 0;
+    color: #e2e8f0;
     font-family: 'Monaco', 'Menlo', monospace;
     font-size: 12px;
     line-height: 1.4;
+    white-space: pre-wrap;
+    word-break: break-all;
     max-height: 200px;
     overflow-y: auto;
+    text-align: left;
 }
 
-/*분석 카드*/
-/*액션 버튼*/
-/*반응형*/
+/* 분석 카드 */
+.analysis-section {
+    margin-bottom: 32px;
+}
+
+.analysis-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.analysis-card {
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 20px;
+    background: white;
+}
+
+.analysis-card.critical {
+    border-left: 4px solid #d32f2f;
+}
+
+.analysis-card.warning {
+    border-left: 4px solid #ff9800;
+}
+
+.card-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.card-description {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+.card-list {
+    list-style: none;
+}
+
+.card-list li {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 4px;
+    padding-left: 12px;
+    position: relative;
+}
+
+.card-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #999;
+}
+
+/* 액션 버튼 */
+.actions {
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: 1px solid #dee2e6;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn:hover {
+    background: #f8f9fa;
+    border-color: #adb5bd;
+}
+
+.btn.primary {
+    background: #495057;
+    color: white;
+    border-color: #495057;
+}
+
+.btn.primary:hover {
+    background: #343a40;
+    border-color: #343a40;
+}
+
+.copy-btn {
+    background: transparent;
+    border: none;
+    color: #adb5bd;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.copy-btn:hover {
+    color: white;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .container {
+        margin: 10px;
+        border-radius: 0;
+        width: calc(100% - 20px);
+    }
+
+    .info-grid,
+    .analysis-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+}
