@@ -10,7 +10,7 @@ const FINDING_TOKEN = 'finding_Bugteam123';
  * @returns {Promise<string[]>} 페이로드 문자열 배열
  */
 async function loadPayloads() {
-  const url = chrome.runtime.getURL('assets/test_payloads.json');
+  const url = chrome.runtime.getURL('asset/test_payload.json');
   const resp = await fetch(url);
   const data = await resp.json();
   // payloads.json이 문자열 배열 또는 {payload} 객체 배열이라 가정
@@ -65,7 +65,9 @@ function analyzeRes(respObj, payload) {
     return { payload, status: 'blocked' };
   }
   const { text } = respObj;
-  const idx = text.indexOf(FINDING_TOKEN);
+  // payload와 토큰이 함께 반사되었는지 확인
+  const combo = payload + FINDING_TOKEN;
+  const idx = text.indexOf(combo);
   if (idx !== -1) {
     return { payload, status: 'vulnerable', position: idx };
   }
@@ -134,5 +136,3 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     return true; // 비동기 응답을 위해 true 반환
   }
 });
-
-// End of background/background.js
