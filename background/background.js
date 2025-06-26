@@ -10,7 +10,7 @@ const FINDING_TOKEN = 'finding_Bugteam123';
  * @returns {Promise<string[]>} 페이로드 문자열 배열
  */
 async function loadPayloads() {
-  const url = chrome.runtime.getURL('assets/payloads.json');
+  const url = chrome.runtime.getURL('assets/test_payloads.json');
   const resp = await fetch(url);
   const data = await resp.json();
   // payloads.json이 문자열 배열 또는 {payload} 객체 배열이라 가정
