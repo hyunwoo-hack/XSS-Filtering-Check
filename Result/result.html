@@ -8,6 +8,7 @@
 </head>
 <body>
     <div class="container">
+        <!--제목-->
         <div class="header">
             <div>
                 <div class="header-title">XSS Filter Visualizer</div>
@@ -15,8 +16,6 @@
             </div>
 
         </div>
-
-
 
         <div class="content">
             <div class="dashboard">
@@ -27,24 +26,24 @@
                     <div class="scan-list">
                         <div class="scan-item">
                             <div class="label">대상 URL</div>
-                            <div class="value">https//example.com</div>
+                            <div class="value" id="scan-url">https//example.com</div>
                         </div>
                         <div class="scan-item">
                             <div class="label">스캔 시간</div>
-                            <div class="value">2025-01-01 00:12:34</div>
+                            <div class="value" id="scan-time">2025-01-01 00:12:34</div>
                         </div>
                         <div class="scan-item">
                             <div class="label">총 소요 시간</div>
-                            <div class="value">00분 00초</div>
+                            <div class="value" id="scan-total">00분 00초</div>
                         </div>
                         <div class="scan-item">
                             <div class="label">테스트 파라미터</div>
-                            <div class="value">q, search, info</div>
+                            <div class="value" id="scan-params">q, search, info</div>
                         </div>
                     </div>
-                    <div class="button-rescan">
-                        <button class="btn-rescan">재스캔</button>
-                    </div>
+                    <button class="btn-rescan" id="rescan">
+                        <span class="btn-text">재스캔</span>
+                    </button>
                 </div>
 
                 <!--요약 상자-->
@@ -102,7 +101,7 @@
         </div>
 
 
-
+        <!--공유 버튼-->
         <div class= "footer">
             <div class="button-share">
                 <button class="btn-sh">JSON 내보내기</button>
@@ -112,5 +111,7 @@
             </div>
         </div>
     </div>
+    
+<script src="result.js"></script>
 </body>
 </html>
