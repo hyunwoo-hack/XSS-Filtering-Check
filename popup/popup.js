@@ -1,112 +1,130 @@
 // popup.js
 
 // 요소 참조
-const urlInput = document.getElementById('url');
-const paramInput = document.getElementById('param');
-const headersInput = document.getElementById('headers');
-const scanBtn = document.getElementById('scanBtn');
-const spinner = scanBtn.querySelector('.spinner');
-const buttonText = scanBtn.querySelector('.button-text');
+const urlInput    = document.getElementById('url');
+const paramInput  = document.getElementById('param');
+const headersInput= document.getElementById('headers');
+const scanBtn     = document.getElementById('scanBtn');
+const spinner     = scanBtn.querySelector('.spinner');
+const buttonText  = scanBtn.querySelector('.button-text');
 const errorBanner = document.getElementById('errorBanner');
+const resultList  = document.getElementById('resultList');
+const progressBar = document.getElementById('progress'); // 진행률 표시 영역
 
-// 설정 아이콘 클릭 시 옵션 페이지 열기
-const openSettings = () => {
-    //옵션으로 이동
-};
+let totalRequests = 0;
+let completed     = 0;
 
-// 에러 메시지 표시
-const showError = (message) => {
-    errorBanner.textContent = message;
-    errorBanner.style.display = 'block';
-};
+// 전역 메시지 리스너: background → popup
+chrome.runtime.onMessage.addListener((msg) => {
+  if (msg.type === 'SCAN_PROGRESS') {
+    // 중간 결과
+    appendResult(msg.payload);
+    completed++;
+    updateProgress();
+  }
+  if (msg.type === 'SCAN_COMPLETE') {
+    // 최종 결과
+    showSummary(msg.payload.summary);
+    hideSpinner();
+  }
+});
 
-// 에러 배너 숨기기
-const hideError = () => {
-    errorBanner.textContent = '';
-    errorBanner.style.display = 'none';
-};
-
-// 스피너 보이기
-const showSpinner = () => {
-    spinner.style.display = 'inline-block';
-    buttonText.style.opacity = '0';
-    scanBtn.disabled = true;
-};
-
-// 스피너 숨기기
-const hideSpinner = () => {
-    spinner.style.display = 'none';
-    buttonText.style.opacity = '1';
-    scanBtn.disabled = false;
-};
-
-// 입력값 유효성 검사 및 버튼 스타일 토글
-const validateInputs = () => {
-    const hasUrl = urlInput.value.trim() !== '';
-    const hasParam = paramInput.value.trim() !== '';
-    const valid = hasUrl && hasParam;
-    // 클릭 가능 여부는 항상 유지하되, 스타일만 변경
-    if (valid) {
-        scanBtn.classList.add('active');
-    } else {
-        scanBtn.classList.remove('active');
+// 유틸: textarea → 헤더 객체
+function parseHeaders(raw) {
+  const obj = {};
+  raw.split('\n').forEach(line => {
+    const [k, ...rest] = line.split(':');
+    if (k && rest.length) {
+      obj[k.trim()] = rest.join(':').trim();
     }
-};
+  });
+  return obj;
+}
 
-// 스캔 버튼 클릭 핸들러
-const handleScan = async () => {
-    hideError();
+// 에러 표시/숨기기
+function showError(msg) {
+  errorBanner.textContent = msg;
+  errorBanner.style.display = 'block';
+}
+function hideError() {
+  errorBanner.textContent = '';
+  errorBanner.style.display = 'none';
+}
 
-    const targetUrl = urlInput.value.trim();
-    const testParam = paramInput.value.trim();
-    const headersRaw = headersInput.value.trim();
+// 스피너 토글
+function showSpinner() {
+  spinner.style.display = 'inline-block';
+  buttonText.style.opacity = 0;
+  scanBtn.disabled = true;
+}
+function hideSpinner() {
+  spinner.style.display = 'none';
+  buttonText.style.opacity = 1;
+  scanBtn.disabled = false;
+}
 
-    if (!targetUrl) {
-        showError('대상 URL을 입력해주세요.');
-        return;
+// 결과 리스트에 항목 추가
+function appendResult({ payload, status, position }) {
+  const li = document.createElement('li');
+  li.textContent = `${payload} → ${status}` + (position != null ? ` @${position}` : '');
+  li.classList.add(status);
+  resultList.appendChild(li);
+}
+
+// 진행률 계산 & 표시
+function updateProgress() {
+  if (totalRequests > 0) {
+    const pct = Math.round((completed / totalRequests) * 100);
+    progressBar.textContent = `진행: ${pct}% (${completed}/${totalRequests})`;
+  }
+}
+
+// 최종 통계 표시
+function showSummary({ totalRequests: t, vulnerableCount, filteredCount, blockedCount }) {
+  // 예시: alert로 대체 가능, 실제론 별도 UI 영역에 렌더
+  alert(`완료!\n총: ${t}\n취약: ${vulnerableCount}\n필터링: ${filteredCount}\n차단: ${blockedCount}`);
+}
+
+// 스캔 시작 핸들러
+async function handleScan() {
+  hideError();
+  resultList.innerHTML = '';
+  progressBar.textContent = '';
+  completed = 0;
+
+  const targetUrl = urlInput.value.trim();
+  const testParam = paramInput.value.trim();
+  if (!targetUrl) { showError('대상 URL을 입력해주세요.'); return; }
+  if (!testParam) { showError('테스트 파라미터를 입력해주세요.'); return; }
+
+  // Custom Headers 파싱
+  const headersRaw    = headersInput.value.trim();
+  const customHeaders = headersRaw ? parseHeaders(headersRaw) : {};
+
+  // 페이로드 수를 알기 위해 payloads.json 미리 로드
+  try {
+    const resp = await fetch(chrome.runtime.getURL('assets/test_payloads.json'));
+    const list = await resp.json();
+    totalRequests = list.length;
+  } catch {
+    totalRequests = 0; // 실패 시 진행률 생략
+  }
+
+  showSpinner();
+
+  // START_SCAN 발송
+  chrome.runtime.sendMessage({
+    type: 'START_SCAN',
+    payload: { targetUrl, param: testParam, headers: customHeaders }
+  }, (response) => {
+    if (response?.status !== 'started') {
+      hideSpinner();
+      showError('스캔 시작에 실패했습니다.');
     }
+  });
+}
 
-    if (!testParam) {
-        showError('테스트 파라미터를 입력해주세요.');
-        return;
-    }
-
-    // Custom Headers 파싱 (선택 입력)
-    let customHeaders;
-    if (headersRaw) {
-        customHeaders = {};
-        headersRaw.split('\n').forEach((line) => {
-            const [key, ...rest] = line.split(':');
-            if (key && rest.length) {
-                customHeaders[key.trim()] = rest.join(':').trim();
-            }
-        });
-    }
-
-    showSpinner();
-
-    try {
-        // TODO: 실제 XSS 스캔 로직 구현
-        // 예: await scanXSS(targetUrl, testParam, customHeaders || undefined);
-
-        // 샘플 대기 (테스트용)
-        await new Promise((resolve) => { resolve(setTimeout(resolve, 2000)); });
-
-        // TODO: 스캔 결과 처리 및 UI 업데이트
-    } catch (err) {
-        showError(`스캔 중 오류 발생: ${err.message}`);
-    } finally {
-        hideSpinner();
-    }
-};
-
-// 이벤트 리스너 등록
+// 이벤트 바인딩
 scanBtn.addEventListener('click', handleScan);
-urlInput.addEventListener('input', validateInputs);
-paramInput.addEventListener('input', validateInputs);
-
-// 초기 버튼 스타일 설정
-validateInputs();
-
-// 전역 함수 노출 (HTML onclick 연결용)
-window.openSettings = openSettings;
+urlInput.addEventListener('input', () => scanBtn.classList.toggle('active', urlInput.value && paramInput.value));
+paramInput.addEventListener('input', () => scanBtn.classList.toggle('active', urlInput.value && paramInput.value));
