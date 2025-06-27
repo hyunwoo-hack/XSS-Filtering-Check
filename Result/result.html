@@ -26,7 +26,7 @@
                     <div class="scan-list">
                         <div class="scan-item">
                             <div class="label">대상 URL</div>
-                            <div class="value" id="scan-url">https//example.com</div>
+                            <div class="value" id="scan-url">https://example.com</div>
                         </div>
                         <div class="scan-item">
                             <div class="label">스캔 시간</div>
@@ -48,7 +48,7 @@
 
                 <!--요약 상자-->
                 <div class="summary">
-                    <div class="sum-box">
+                    <div class="sum-box" id="total-box">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="mi-solid mi-pulse" viewBox="0 0 24 24">
                         <path d="m14 20.37-2.71-8.13-1.24-4.34-1.81 7.25-2.33-4.66-1.36 2.04c-.09.14-.25.22-.42.22H2.75c-.41 0-.75-.34-.75-.75s.34-.75.75-.75h.85l2.49-3.74 1.67 3.34L9.95 2.1l2.77 9.69L14 15.62l4-11.99 2.54 7.62h.71c.41 0 .75.34.75.75s-.34.75-.75.75h-1.43c-.22 0-.41-.14-.47-.34L18 8.37z"/>
                         </svg>
@@ -57,7 +57,7 @@
                         <div class="sum-describe">HTTP 헤더, 라이브러리, API, 페이로드 포함</div>
                     </div>
 
-                    <div class="sum-box">
+                    <div class="sum-box" id="vuln-box">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="mi-solid mi-pulse" viewBox="0 0 24 24">
                         <path d="m14 20.37-2.71-8.13-1.24-4.34-1.81 7.25-2.33-4.66-1.36 2.04c-.09.14-.25.22-.42.22H2.75c-.41 0-.75-.34-.75-.75s.34-.75.75-.75h.85l2.49-3.74 1.67 3.34L9.95 2.1l2.77 9.69L14 15.62l4-11.99 2.54 7.62h.71c.41 0 .75.34.75.75s-.34.75-.75.75h-1.43c-.22 0-.41-.14-.47-.34L18 8.37z"/>
                         </svg>
@@ -65,7 +65,7 @@
                         <div class="sum-title">취약점 발견</div>
                         <div class="sum-describe">XSS 공격에 노출될 수 있는 보안 이슈</div>
                     </div>
-                    <div class="sum-box">
+                    <div class="sum-box" id="filter-box">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="mi-solid mi-pulse" viewBox="0 0 24 24">
                         <path d="m14 20.37-2.71-8.13-1.24-4.34-1.81 7.25-2.33-4.66-1.36 2.04c-.09.14-.25.22-.42.22H2.75c-.41 0-.75-.34-.75-.75s.34-.75.75-.75h.85l2.49-3.74 1.67 3.34L9.95 2.1l2.77 9.69L14 15.62l4-11.99 2.54 7.62h.71c.41 0 .75.34.75.75s-.34.75-.75.75h-1.43c-.22 0-.41-.14-.47-.34L18 8.37z"/>
                         </svg>
@@ -104,14 +104,14 @@
         <!--공유 버튼-->
         <div class= "footer">
             <div class="button-share">
-                <button class="btn-sh">JSON 내보내기</button>
-                <button class="btn-sh">CSV 내보내기</button>
-                <button class="btn-sh">보고서 공유</button>
-                <button class="btn-sh btn-primary">새 스캔 시작</button>
+                <button class="btn-sh" id="export-json">JSON 내보내기</button>
+                <button class="btn-sh" id="export-csv">CSV 내보내기</button>
+                <button class="btn-sh" id="share-report">보고서 공유</button>
+                <button class="btn-sh btn-primary" id="new-scan">새 스캔 시작</button>
             </div>
         </div>
     </div>
     
-<script src="result.js"></script>
+    <script src="result.js"></script>
 </body>
 </html>
