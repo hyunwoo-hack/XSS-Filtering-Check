@@ -26,6 +26,15 @@ chrome.runtime.onMessage.addListener((msg) => {
     // 최종 결과
     showSummary(msg.payload.summary);
     hideSpinner();
+    // --- 변경점: 전체 결과를 로컬 스토리지에 저장
+    chrome.storage.local.set({ scanReport: msg.payload });
+    // 2) result.html 팝업 띄울 때 query param 추가
+    const url = new URL(chrome.runtime.getURL('result.html'));
+    // popup.js 에선 config.targetUrl / config.param / 현재시간을 알고 있으니 저장해둔 전역값 참조
+    url.searchParams.set('url', config.targetUrl);
+    url.searchParams.set('params', config.param);
+    url.searchParams.set('scanTime', new Date().toISOString());
+    chrome.windows.create({ url: url.toString(), type:'popup', width: 500, height: 700 });
   }
 });
 
