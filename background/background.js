@@ -44,10 +44,16 @@ async function requestFilterChk(targetUrl, param, payload, headers = {}) {
   await delay(DELAY_MS);
 
   try {
-    // 3) HTTP 요청 (fetch)
+    const start = Date.now();
     const response = await fetch(url, { headers });
     const text = await response.text();
-    return { text };
+    const responseTimeMs = Date.now() - start;
+    return {
+      text,
+      statusCode: response.status,
+      responseTimeMs,
+      url
+    };
   } catch (err) {
     console.error('Request error:', err);
     return { error: err };
@@ -69,9 +75,11 @@ function analyzeRes(respObj, payload) {
   const combo = payload + FINDING_TOKEN;
   const idx = text.indexOf(combo);
   if (idx !== -1) {
-    return { payload, status: 'vulnerable', position: idx };
+    return { payload, status: 'vulnerable', position: idx,
+             responseTimeMs, statusCode, url, responseText: text };
   }
-  return { payload, status: 'filtered' };
+  return { payload, status: 'filtered',
+           responseTimeMs, statusCode, url, responseText: text };
 }
 
 /**
