@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Popup 2 - XSS Filter Visualizer</title>
+    <link rel="stylesheet" href="./popup2.css" />
+</head>
+<body>
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <button class="back-button">
+            ←
+        </button>
+        <div class="title">XSS Filter Visualizer</div>
+    </div>
+
+    <!-- Stats (예시) -->
+    <div class="stats">
+        <div class="stat-card">
+            <div class="stat-number" id="total-tests">100</div>
+            <div class="stat-label">총 테스트</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="vuln-found">12</div>
+            <div class="stat-label">취약점 발견</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="filtered">38</div>
+            <div class="stat-label">필터링 됨</div>
+        </div>
+    </div>
+
+    <!-- Dynamic Params Sections -->
+    <div class="result-section" id="result-section">
+        <!-- 여기에 각 파라미터별로 섹션을 추가 -->
+    </div>
+
+    <!-- 다시 스캔할 경우 입력란 -->
+    <div class="input-section">
+        <label for="test-param" class="input-label">
+            테스트 파라미터 <span class="required">*</span>
+        </label>
+        <input
+                type="text"
+                id="test-param"
+                class="input-field"
+                placeholder="q, search"
+        />
+        <button id="start-scan" class="scan-button">스캔 시작</button>
+    </div>
+</div>
+
+<script src="./popup2.js"></script>
+</body>
+</html>
