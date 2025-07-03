@@ -55,6 +55,34 @@ body {
     margin-bottom: 20px;
 }
 
+.form-group.checkbox-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.form-checkbox {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    accent-color: #3b82f6;
+}
+
+.form-label-inline {
+    font-size: 13px;
+    color: #374151;
+}
+
+.options-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 5px;
+}
+
+.option-group {
+    flex: 1;
+}
+
 .form-label {
     display: block;
     margin-bottom: 6px;
@@ -67,8 +95,7 @@ body {
     color: #dc2626;
 }
 
-.form-input,
-.form-textarea {
+.form-input {
     width: 100%;
     padding: 10px 12px;
     border: 1px solid #d1d5db;
@@ -78,27 +105,10 @@ body {
     font-family: inherit;
 }
 
-.form-input:focus,
-.form-textarea:focus {
+.form-input:focus {
     outline: none;
     border-color: #3b82f6;
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.form-input.error {
-    border-color: #dc2626;
-    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
-}
-
-.form-textarea {
-    resize: vertical;
-    min-height: 80px;
-}
-
-.form-hint {
-    font-size: 11px;
-    color: #6b7280;
-    margin-top: 4px;
 }
 
 .scan-button {
