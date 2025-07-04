@@ -1,5 +1,4 @@
-[
-  {
+  
     "payload": "<",
     "category": "basic",
     "description": "Less-than sign"
@@ -7,36 +6,48 @@
   {
     "payload": ">",
     "category": "basic",
-    "description": "Greater-than sign"
-  },
-  {
-    "payload": "'",
-    "category": "basic",
-    "description": "Single quote"
-  },
-  {
-    "payload": "\"",
-    "category": "basic",
-    "description": "Double quote"
-  },
-  {
-    "payload": "<script>alert(1)</script>",
-    "category": "script",
-    "description": "Inline script tag"
-  },
-  {
-    "payload": "<img src=x onerror=alert(1)>",
-    "category": "img",
-    "description": "Image onerror event"
-  },
-  {
-    "payload": "\"><svg onload=alert(1)>",
-    "category": "svg",
-    "description": "SVG onload vector"
-  },
-  {
-    "payload": "<iframe src=javascript:alert(1)>",
-    "category": "iframe",
-    "description": "Iframe JS URI"
-  }
+[
+  { "payload": "<",       "category": "basic",  "description": "Less‑than sign" },
+  { "payload": ">",       "category": "basic",  "description": "Greater‑than sign" },
+  { "payload": "'",       "category": "basic",  "description": "Single quote" },
+  { "payload": "\"",      "category": "basic",  "description": "Double quote" },
+
+  { "payload": "%3C",     "category": "url",    "description": "Less‑than (URL‑encoded)" },
+  { "payload": "%3E",     "category": "url",    "description": "Greater‑than (URL‑encoded)" },
+  { "payload": "%27",     "category": "url",    "description": "Single quote (URL‑encoded)" },
+  { "payload": "%22",     "category": "url",    "description": "Double quote (URL‑encoded)" },
+
+  { "payload": "%253C",   "category": "url_double", "description": "Less‑than (double URL‑encoded)" },
+  { "payload": "%253E",   "category": "url_double", "description": "Greater‑than (double URL‑encoded)" },
+
+  { "payload": "PA==",    "category": "base64", "description": "Less‑than (Base64)" },
+  { "payload": "Pg==",    "category": "base64", "description": "Greater‑than (Base64)" },
+  { "payload": "Jw==",    "category": "base64", "description": "Single quote (Base64)" },
+  { "payload": "Ig==",    "category": "base64", "description": "Double quote (Base64)" },
+
+  { "payload": "\\u003C", "category": "unicode_dbl", "description": "Less‑than (double‑escaped Unicode)" },
+  { "payload": "\\u003E", "category": "unicode_dbl", "description": "Greater‑than (double‑escaped Unicode)" },
+  { "payload": "\\u0027", "category": "unicode_dbl", "description": "Single quote (double‑escaped Unicode)" },
+  { "payload": "\\u0022", "category": "unicode_dbl", "description": "Double quote (double‑escaped Unicode)" },
+
+  { "payload": "\u003C",  "category": "unicode", "description": "Less‑than (Unicode literal)" },
+  { "payload": "\u003E",  "category": "unicode", "description": "Greater‑than (Unicode literal)" },
+  { "payload": "\u0027",  "category": "unicode", "description": "Single quote (Unicode literal)" },
+  { "payload": "\u0022",  "category": "unicode", "description": "Double quote (Unicode literal)" },
+
+  { "payload": "\\x3C",   "category": "regex",  "description": "Less‑than (regex literal)" },
+  { "payload": "\\x3E",   "category": "regex",  "description": "Greater‑than (regex literal)" },
+  { "payload": "\\x27",   "category": "regex",  "description": "Single quote (regex literal)" },
+  { "payload": "\\x22",   "category": "regex",  "description": "Double quote (regex literal)" },
+
+  { "payload": "&lt;",    "category": "html_entity",  "description": "Less‑than (&lt;)" },
+  { "payload": "&gt;",    "category": "html_entity",  "description": "Greater‑than (&gt;)" },
+  { "payload": "&apos;",  "category": "html_entity",  "description": "Single quote (&apos;)" },
+  { "payload": "&quot;",  "category": "html_entity",  "description": "Double quote (&quot;)" },
+
+  { "payload": "&#60;",   "category": "html_entity_dec", "description": "Less‑than (decimal entity)" },
+  { "payload": "&#62;",   "category": "html_entity_dec", "description": "Greater‑than (decimal entity)" },
+  { "payload": "&#x3C;",  "category": "html_entity_hex", "description": "Less‑than (hex entity)" },
+  { "payload": "&#x3E;",  "category": "html_entity_hex", "description": "Greater‑than (hex entity)" }
 ]
+
