@@ -4,6 +4,7 @@ import Dom_Storage   from "../lib/dom_storage.js";
 import {OPTION_KEYS, START_MSG, FILTER_CHECK, ATTACK_START, REPLAY_CHECK} from "../lib/config.js";
 
 const xss           = new Xss_Bayev(OPTION_KEYS);
+const sensor        = new Dom_Storage();
 const filter_recver = new Recver();
 const replay_recver = new Recver();
 const attack_recver = new Recver();
@@ -16,6 +17,8 @@ let filter_seeker = async function(config=null) {
 let attack_seeker = async function(config){
   await xss.attack_naut(config);
 }
+
+sensor.url_sensor();
 
 filter_recver.resp_set(START_MSG);
 replay_recver.resp_set(START_MSG);
