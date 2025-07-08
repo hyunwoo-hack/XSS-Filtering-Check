@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>XSS Filter Visualizer</title>
-    <link rel="stylesheet" href="popup.css">
+    <meta name="hidden-input" content="1" />
+    <link rel="stylesheet" href="popup.css" />
 </head>
 <body>
 <div class="container">
@@ -24,16 +25,26 @@
             <label for="url" class="form-label">
                 대상 URL <span class="required">*</span>
             </label>
-            <input id="url" class="form-input" type="text"
-                   placeholder="https://example.com" autocomplete="off">
+            <input
+                    id="url"
+                    class="form-input"
+                    type="text"
+                    placeholder="https://example.com"
+                    autocomplete="off"
+            />
         </div>
 
         <div class="form-group">
             <label for="param" class="form-label">
                 테스트 파라미터 <span class="required">*</span>
             </label>
-            <input id="param" class="form-input" type="text"
-                   placeholder="q, search" autocomplete="off">
+            <input
+                    id="param"
+                    class="form-input"
+                    type="text"
+                    placeholder="q, search"
+                    autocomplete="off"
+            />
         </div>
 
                 <div class="options-row">
@@ -84,7 +95,7 @@
 
         <div id="errorBanner" class="error-banner"></div>
         <div id="progress" class="progress-bar"></div>
-        <ul  id="resultList" class="result-list"></ul>
+        <ul id="resultList" class="result-list"></ul>
     </div>
 </div>
 
@@ -92,3 +103,4 @@
 <script type="module" src="../lib/half_ast_tree_int/html_ast.js"></script>
 </body>
 </html>
+
