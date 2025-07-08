@@ -40,7 +40,8 @@ op.content_load(async ()=>{
 err_recver.error_recv([spinner_destroy, (msg)=>{op.error(msg.payload);}]);
 mov_recver.recv(mov_popup2, [spinner_destroy, ()=>{location.href = '../popup2/popup2.html'}]);
 
-op.click("scanBtn", filter_check  );
 op.input("url"    , param_auto_set);
+op.click("scanBtn", filter_check  );
+op.click("target-finder", ()=>{location.href = "../popup4/popup4.html"});
 op.input("url"    , () => op.id("scanBtn").classList.toggle('active', op.scan("url") && op.scan("param")))
 op.input("param"  , () => op.id("scanBtn").classList.toggle('active', op.scan("url") && op.scan("param")))
