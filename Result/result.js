@@ -1,161 +1,68 @@
 //result.js
+import sign                           from "../lib/operator.js";
+import atk_gen                        from "./attack_result.js";
+import { ATTACK_RESULT, ATTACK_DATA } from "../lib/config.js";
+import { Recver }                     from "../lib/messegeController.js";
 
-//대상 url과 파라미터 가져오기 
-function getQueryParam(key){
-    const params = new URLSearchParams(window.location.search);
-    return params.get(key);
-};
+const op             = sign();
+const PAYLOAD        = "payload";
+const PARAM          = "param";
+const HOST           = "url";
+const RESPONSE       = "response";
+const TOTAL          = 'total';
+const VULN           = "vuln";
+const TARGET         = "target";
 
+class Result_Page{
+    static run_factory(){
+        const page       = new Result_Page();
+        const res_recver = new Recver();
 
-function formatScanTime(timeString){
-    return timeString
-    ? new Date(timeString).toLocaleString("ko-KR", {
-            year : 'numeric',
-            month : '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: false
-        }).replace(/\. /g, '-').replace('.', '').replace(' ', ' '): "undefined";
-};
+        res_recver.recv(ATTACK_RESULT, [(msg)=>{page.result_update(msg[ATTACK_DATA]);}])
+        op.click("print", ()=>{window.print();});
+        op.click("close", ()=>{window.close();});
+        op.click("clear", ()=>{op.print("search", ""); filterAnalysisItem('');});
+        op.click("share", ()=>{
+            navigator.clipboard.writeText(window.location.href).then(() => {showTemporaryMessage('URL 복사 완료');})
+            .catch(() => {showTemporaryMessage('URL 복사 실패');});
+        })
+    }
 
+    constructor(){this.res_list = [];}
 
+    result_update(msg){
+        op.print("target_param", "Parameter: " + msg[TARGET]);
+        let res = atk_gen(msg[PAYLOAD], msg[PARAM], msg[HOST], msg[RESPONSE]);
+        this.res_list.push(res);
+        res.attach("analyze");
+        this.#count_add(TOTAL);
+        this.#count_add(VULN);
+    }
 
-window.addEventListener("DOMContentLoaded", ()=>{
-    scanInfo();
-    sumBox();
-    eventHandler();
-});
+    #count_add(target){
+        let count = Number(op.scan(target));
+        op.print(target, count + 1);
+        return true;
+    }
+}
+Result_Page.run_factory();
 
+function filterAnalysisItem(query){ //검색 기능
+    const items = document.querySelectorAll('.analysis-item');
+    const lowerQuery = query.toLowerCase();
+    let visibleCount = 0;
 
+    items.forEach(item => {
+        const payload = item.querySelector('.payload-text')?.textContent.toLowerCase() || '';
+        const raw = item.querySelector('.raw-data-content')?.textContent.toLowerCase() || '';
+        const combined = payload + ' ' + raw;
 
-function scanInfo(){
-    //대상 url, 스캔 시간, 총 소요시간, 파라미터 출력하기
-    const targetUrl = getQueryParam("url");
-    const testParams = getQueryParam("params");
-    const currentTime = getQueryParam("scanTime");
-
-
-    const duration = performance.now()
-    const minutes = Math.floor(duration / 60000);
-    const seconds = Math.floor((duration % 60000) / 1000);
-
-
-    document.getElementById("scan-url").textContent=targetUrl || undefined;
-    document.getElementById("scan-time").textContent= formatScanTime(currentTime);
-    document.getElementById("scan-total").textContent=`${minutes}분 ${seconds}초`;
-    document.getElementById("scan-params").textContent=testParams || undefined;
-
-};
-
-//popup.js에서 background로부터 전달받고 result.js로 보내기
-function sumBox(){
-    //요약 상자 내역 출력하기 - 총 개수, 취약점 개수, 필터링 개수
-    chrome.storage.local.get("scanReport", (data) => {
-        const report = data.scanReport;
-        if(!report || !report.summary) {
-            return;
-        }
-
-        const summary = report.summary;
-        
-        document.getElementById("total-box").querySelector(".sum-value").textContent = summary.totalRequests;
-        document.getElementById("vuln-box").querySelector(".sum-value").textContent = summary.vulnerableCount;
-        document.getElementById("filter-box").querySelector(".sum-value").textContent = summary.filteredCount;
+        if (combined.includes(lowerQuery)) {
+            item.style.display = 'block';
+            visibleCount++;
+        }else{ item.style.display = 'none';}
     });
-};
+    op.id("no-result-message").style.display = visibleCount === 0 ? 'block' : 'none';
+}
 
-
-function eventHandler(){
-
-    const rescanBtn = document.getElementById("rescan");
-    const jsonBtn = document.getElementById("export-json");
-    const csvBtn = document.getElementById("export-csv");
-    const newScanBtn = document.getElementById("new-scan");
-
-    //재스캔 -> 연동하기 수정필요
-    if (rescanBtn) {
-        rescanBtn.addEventListener("click", () => {
-            window.location.href="result.html"; 
-        });
-    };
-    
-    //json 내보내기
-    if (jsonBtn){
-        jsonBtn.addEventListener("click", () => {
-            chrome.storage.local.get("scanReport", (data) => {
-                const report = data.scanReport;
-                if (!report){
-                    return alert("undefined");
-                }
-                const jsonText = JSON.stringify(report, null, 2);
-                const blob = new Blob([jsonText], {type: "application/json"});
-                downloadReport(blob, "result.json");
-
-            });
-        });
-    };
-
-
-    //csv내보내기
-    if (csvBtn){
-        csvBtn.addEventListener("click", () =>{
-            chrome.storage.local.get("scanReport", (data) => {
-                const report = data.scanReport;
-                if(!report){
-                    alert("undefined");
-                    return;
-                }
-
-                const header = ["Payload", "Status", "Position"];
-                const rows = [header];
-
-                for (const item of report.details){
-                    rows.push([
-                        item.payload,
-                        item.status,
-                        item.position !== undefined ? item.position : ""
-                    ]);
-                }
-                const csvText = rows.map(row =>
-                    row.map(field => `"${String(field).replace(/"/g,'""')}"`).join(",")).join("\r\n");
-
-                const blob = new Blob([csvText], {type: "text/csv;charset=utf-8;"});
-                downloadReport(blob, "result.csv");
-                
-            });
-        });
-    };
-
-    //새 스캔 시작
-    if(newScanBtn){
-        newScanBtn.addEventListener("click", () => {
-            window.close();
-        });
-    };
-};
-
-
-function downloadReport(blob, filename){
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-};
-
-
-
-//보고서 공유 -> 어떻게 공유할 것인지 의논 필요  
-
-
-//상세 결과 분석
-//검색
-
-
+op.input("search", ()=>{filterAnalysisItem(op.scan("search"));});
