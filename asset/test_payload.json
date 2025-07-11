@@ -1,11 +1,3 @@
-  
-    "payload": "<",
-    "category": "basic",
-    "description": "Less-than sign"
-  },
-  {
-    "payload": ">",
-    "category": "basic",
 [
   { "payload": "<",       "category": "basic",  "description": "Less‑than sign" },
   { "payload": ">",       "category": "basic",  "description": "Greater‑than sign" },
