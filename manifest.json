@@ -32,5 +32,12 @@
   ],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'"
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["lib/main_capture.js"],
+      "run_at": "document_idle"
+    }
+  ]
 }

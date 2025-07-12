@@ -3,32 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <link rel="stylesheet" href="./popup3.css" />
+    <link rel="stylesheet" href="./popup4.css" />
     <title>Finder</title>
 </head>
 <body>
-    <div style="background-color: white; margin: 15px; border-radius: 8px;">
-        <div style="font-weight: bolder; font-size: 16px; padding:17px">Target Finder</div>
-        <hr style="color: lightgray;"/>
-        <div style="display: flex; justify-content: space-between; padding-right: 21px; padding-left: 21px; padding-top: 18px;">
-            <p><a href="../popup/popup.html" style="text-decoration: none; color: gray;"> ← </a></p>
-            <p><a href="../popup3/popup3.html" style="text-decoration: none; color: gray;"> → </a></p>
+    <div style="background-color: white; margin: 15px; border-radius: 8px; height:460px;">
+       
+        
+        <div style="display: flex; justify-content: space-between;border-bottom: 1px solid lightgray; ">
+            <div style="font-weight: bolder; font-size: 16px; padding:6px;">Target Finder </div>
+            
+            <p><a href="../popup/popup.html" style="text-decoration: none; color: gray; font-weight:bolder; font-size: 25px; margin-right: 20px;"> ← </a></p>
         </div>
-        <div style="display: flex; justify-content: space-around;">
-            <div id="url">
-                <div>current URL : </div>
 
+        <div style="display: flex; justify-content: space-around; margin-top:6px; padding-bottom: 6px; border-bottom: 2px solid lightgray;">
+            <div style="display: flex; margin-right: 10px; font-size: 10px;">
+                <div style="font-size: 10px; margin-right: 3px;">전체 : <span id="total">0</span>개 /</div>
+                <span>선택 : <span id="select_count">0</span>개</span>
             </div>
-            <label>
-                <span id="toggle_status" style="color: gray;">off</span>
-                <input id="observ" type="checkbox"/>
-            </label>
-        </div>
-        <div>
-            <div style="display: flex; justify-content: center; padding:20px">
-                <iframe style="width:340px; height: 340px; border:0; background-color: lightgray; border-radius: 5px;">
 
-                </iframe>   
+
+            <div style="display: flex; ">
+                <label style="font-size: 10px;">
+                    <span id="all-select" class="all-select">전체 선택</span>/
+                    <span id="unselect">선택 해제</span>
+                </label>
+            </div>
+        </div>
+
+        <div>
+
+            <div id="find_url">
+            </div>
+
+            <div style="display: none" id="blank">
+            </div>
+
+            
+            <div style="position: absolute; top:432px; display: flex; justify-content: center;">
+                <div id="delay_tab">
+                    <div style="color: gray; font-size: 12px; text-align: center;">delay</div>
+                    <input type="number" id="delay" min="0" value="0">
+                </div>
+                <input type="button" value="START" id="scan_start">
             </div>
         </div>
     </div>
