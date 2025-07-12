@@ -45,3 +45,17 @@ op.click("scanBtn", filter_check  );
 op.click("target-finder", ()=>{location.href = "../popup4/popup4.html"});
 op.input("url"    , () => op.id("scanBtn").classList.toggle('active', op.scan("url") && op.scan("param")))
 op.input("param"  , () => op.id("scanBtn").classList.toggle('active', op.scan("url") && op.scan("param")))
+
+
+
+
+
+
+// delay
+// "0"
+// param
+// "q"
+// url
+// "https://Domain.com?q=asd"
+// useCookies
+// true
