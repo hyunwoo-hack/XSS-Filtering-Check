@@ -3,6 +3,8 @@ import sign         from "../lib/operator.js";
 import url_gen      from "./find_url.js";
 import Dom_Storage  from "../lib/dom_storage.js";
 import Input_Parser from "../lib/inputpaser.js";
+import { Sender, Recver }   from "../lib/messegeController.js";
+import { FILTER_CHECK, mov_popup2 } from "../lib/config.js";
 
 // find_url
 
@@ -15,17 +17,25 @@ class Popup4{
     static async run_factory(){
         const pop = new Popup4();
         const cap = new Dom_Storage();
+        const test_sender = new Sender(FILTER_CHECK, {status : 'started'});
+        const mov_recver = new Recver();
 
         let current_page = await cap.power_capture();
         let current_url  = current_page[0];
         let current_html = current_page[1];
 
+        mov_recver.recv(mov_popup2, [()=>{location.href = '../popup2/popup2.html'}]);
 
         let url_list     = pop.url_extractor_at_element(current_html);
         pop.add_url_tab(url_list, current_url);
 
         op.click("unselect"  , pop.unselect_all);
         op.click("all-select", pop.select_all  );
+        op.click("scan_start", ()=>{
+            let opt = pop.get_select();
+            test_sender.req_set({payload : opt});
+            test_sender.send(null, [()=>{}]); // op.error("스캔 실패")
+        });
 
         const container = op.id("find_url");
         const blank     = op.id("blank");
@@ -49,6 +59,24 @@ class Popup4{
 
     constructor(){
         this.num = 1;
+    }
+
+    get_select(){
+        let delay      = op.scan("delay");
+        let conf       = []
+
+        // for(;;){
+        let selected_targets = document.querySelectorAll(".select_target");
+        // if(selected_targets.length <= 0) break;
+        for(let select_target of selected_targets){
+            let full_url = select_target.childNodes[1].childNodes[2].value;
+            let param    = parser.param_keys(full_url);
+            let opt      = {"url" : full_url, "param" : param.join(","), "delay" : delay, "useCookies" : true};
+            conf.push(opt);
+        }
+        // }
+
+        return conf;
     }
 
     url_extractor_at_element(response){
@@ -131,7 +159,6 @@ class Popup4{
     add_url_tab(url_array, current_url){
         let url_list = url_array;
         url_list = this.#url_filter(url_array);
-        console.log(url_list);
 
         if(url_list != null){
             op.print("total"       , url_list.length);
@@ -172,13 +199,12 @@ class Popup4{
             if(url_param_map[parser.url_extractor(url)]){
                 let param_keys  = parser.param_keys(url);
                 let saved_param = url_param_map[parser.url_extractor(url)];
-                if(this.#param_checker(param_keys, saved_param)){continue;}// 변경 필요
+                if(this.#param_checker(param_keys, saved_param)){continue;}
             }
             url_param_map[parser.url_extractor(url)] = parser.param_keys(url);
 
             pure_url.push(url);
         }
-
 
         op.law(Array, pure_url, "Type Error (method url_array return)");
         return pure_url;
