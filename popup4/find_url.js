@@ -93,7 +93,6 @@ class Find_url{
         for(let param of params){
             if(result == ""){
                 result += this.#decode_html_entities(param);
-                console.log(result)
             }else{ 
                 result += " ," + this.#decode_html_entities(param);
             }
