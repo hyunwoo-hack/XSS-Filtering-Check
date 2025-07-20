@@ -11,23 +11,12 @@
     "service_worker": "background/background.js",
     "type": "module"
   },
-  "permissions": [
-    "storage",
-    "tabs",
-    "scripting"
-  ],
-  "host_permissions": [
-    "<all_urls>"
-  ],
+  "permissions": ["storage", "tabs", "scripting"],
+  "host_permissions": ["<all_urls>"],
   "web_accessible_resources": [
     {
-      "resources": [
-        "result/*",
-        "result_details/*"
-      ],
-      "matches": [
-        "<all_urls>"
-      ]
+      "resources": ["result/*", "result_details/*", "lib/diff.min.js"],
+      "matches": ["<all_urls>"]
     }
   ],
   "content_security_policy": {
