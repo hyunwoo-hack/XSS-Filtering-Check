@@ -70,6 +70,7 @@ class Popup4{
         // if(selected_targets.length <= 0) break;
         for(let select_target of selected_targets){
             let full_url = select_target.childNodes[1].childNodes[2].value;
+            if(full_url == "") continue;
             let param    = parser.param_keys(full_url);
             let opt      = {"url" : full_url, "param" : param.join(","), "delay" : delay, "useCookies" : true};
             conf.push(opt);
@@ -132,11 +133,11 @@ class Popup4{
             if(name == null) continue;
             let value = child.find_attr("value");
             if(value != null){
-                if(result == "")result = name + "=" + value;
+                if(result == "")result = "?" + name + "=" + value;
                 else result = result + "&" + name + "=" + value;
             }
             else{
-                if(result == "")result = name + "=";
+                if(result == "")result = "?" + name + "=";
                 else result = result + "&" + name + "=" + value;
             }
         }

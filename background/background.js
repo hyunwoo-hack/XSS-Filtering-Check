@@ -39,6 +39,7 @@ class Back_Ground{
         this.xss_length = config.length;
         for(let one_target of config){
           if(!await this.#url_xss_obj(one_target["url"], one_target))return false;
+          xss.sleep(one_target["delay"]);
         }
       }
       else if(op.born(config) == Object){
