@@ -115,8 +115,8 @@ class Popup4{
         for(let form of form_list){
             let method = form.find_attr("method");
             let querystring;
-            if(method.toLowerCase() == "post") continue;
             if(method == null || method.toLowerCase() == "get"){querystring = this.#form_querystring(form)}
+            else if(method.toLowerCase() == "post") continue;
             let url = form.find_attr("action");
             
             if(querystring == null) url_list.push(url);

@@ -2,13 +2,11 @@ import Xss_Bayev     from "../lib/xss_bayev.js";
 import sign          from "../lib/operator.js";
 import Input_Parser  from "../lib/inputpaser.js";
 import {Recver}      from "../lib/messegeController.js";
-import Dom_Storage   from "../lib/dom_storage.js";
 import {OPTION_KEYS, START_MSG, FILTER_CHECK, ATTACK_START} from "../lib/config.js";
 
 const op            = sign();
 const xss           = new Xss_Bayev(OPTION_KEYS);
 const parser        = new Input_Parser();
-const sensor        = new Dom_Storage();
 const filter_recver = new Recver();
 const replay_recver = new Recver();
 const attack_recver = new Recver();

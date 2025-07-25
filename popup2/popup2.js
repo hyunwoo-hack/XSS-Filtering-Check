@@ -61,8 +61,6 @@ class popup2{
                 break;
             }
         }
-        console.log(current_view);
-        console.log(result_keys[current_view]);
 
         // 기존 요소 안보이게 하고, status false로 변경 
         this.url_filter_res[result_keys[current_view]][0].style.display = "none";

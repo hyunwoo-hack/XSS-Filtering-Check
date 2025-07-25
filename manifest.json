@@ -3,6 +3,9 @@
   "name": "XSS Filter Visualizer",
   "description": "Reflected XSS 필터링 여부를 자동 검사하고 결과를 시각화합니다.",
   "version": "0.2.0",
+  "icons" : {
+    "128" : "3S_.png"
+  },
   "action": {
     "default_title": "XSS Filter Visualizer",
     "default_popup": "popup/popup.html"
